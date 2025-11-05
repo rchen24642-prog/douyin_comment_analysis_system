@@ -1,0 +1,27 @@
+body{
+    margin: 0;
+    padding: 0;
+    overflow:hidden;
+}
+
+/* === 全局统一卡片样式 === */
+.el-card {
+    background-color: #ffffff !important;   /* ✅ 白底 */
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;  /* ✅ 柔和阴影 */
+    border-radius: 8px !important;
+    border: none !important;
+}
+
+/* === 页面底色统一 === */
+body,
+.el-main,
+.processing-container,
+.dict-container,
+.comment-query,
+.network-container,
+.project-view,
+.retrieval-container,
+.user-info-container,
+.visualization-container {
+    background-color: #f5f7fa !important;   /* ✅ 浅灰背景，让白卡片更突出 */
+}

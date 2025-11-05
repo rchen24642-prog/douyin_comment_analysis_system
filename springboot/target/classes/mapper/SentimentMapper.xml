@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.dao.SentimentDao">
+
+    <!-- 根据情感分析ID查询 -->
+    <select id="selectBySid" resultType="com.example.springboot.entity.Sentiment">
+        SELECT * FROM sentiment
+        WHERE sid = #{sid}
+    </select>
+
+    <!-- 根据项目ID查询情感分析列表 -->
+    <select id="selectByProjectId" resultType="com.example.springboot.entity.Sentiment">
+        SELECT * FROM sentiment
+        WHERE pid = #{pid}
+    </select>
+
+    <!-- 根据评论ID查询情感分析 -->
+    <select id="selectByCid" resultType="com.example.springboot.entity.Sentiment">
+        SELECT * FROM sentiment
+        WHERE cid = #{cid}
+    </select>
+
+</mapper>

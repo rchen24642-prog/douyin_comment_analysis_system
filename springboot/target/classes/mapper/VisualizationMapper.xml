@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.dao.VisualizationDao">
+
+    <!-- 1) 情感分布：按 sentiment_label 分组 -->
+    <select id="selectSentimentDistribution" resultType="map">
+        SELECT s.sentiment_label AS sentimentLabel,
+        COUNT(*)           AS cnt
+        FROM sentiment s
+        <where>
+            <if test="pid != null and pid != ''">
+                AND s.pid = #{pid}
+            </if>
+        </where>
+        GROUP BY s.sentiment_label
+    </select>
+
+    <!-- 2) 舆情热度：按天统计评论数与点赞总数 -->
+    <select id="selectDailyTrend" resultType="map">
+        SELECT DATE(c.comment_time)        AS date,
+        COUNT(*)                    AS comments,
+        COALESCE(SUM(c.like_count),0) AS likes
+        FROM comment c
+        <where>
+            <if test="pid != null and pid != ''">
+                AND c.pid = #{pid}
+            </if>
+            <if test="start != null">
+                AND DATE(c.comment_time) &gt;= #{start}
+            </if>
+            <if test="end != null">
+                AND DATE(c.comment_time) &lt;= #{end}
+            </if>
+        </where>
+        GROUP BY DATE(c.comment_time)
+        ORDER BY DATE(c.comment_time)
+    </select>
+
+    <!-- 3) 关键词统计文本：抓取最近 N 条有内容的评论 -->
+    <select id="selectRecentCommentTexts" resultType="string">
+        SELECT c.content
+        FROM comment c
+        <where>
+            <if test="pid != null and pid != ''">
+                AND c.pid = #{pid}
+            </if>
+            AND c.content IS NOT NULL AND c.content != ''
+        </where>
+        ORDER BY c.comment_time DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- 4) 社交网络：子评论用户名 -> 父评论用户名（最近N条） -->
+    <select id="selectReplyPairs" resultType="map">
+        SELECT c.username   AS childUser,
+        p.username   AS parentUser
+        FROM comment c
+        JOIN comment p ON c.parent_cid = p.cid
+        <where>
+            <if test="pid != null and pid != ''">
+                AND c.pid = #{pid}
+            </if>
+            AND c.parent_cid IS NOT NULL AND c.parent_cid != ''
+        </where>
+        ORDER BY c.comment_time DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.dao.ProjectDao">
+
+    <!-- 根据项目ID查询 -->
+    <select id="selectByPid" resultType="com.example.springboot.entity.Project">
+        SELECT * FROM project
+        WHERE pid = #{pid}
+    </select>
+
+    <!-- 根据状态查询项目列表 -->
+    <select id="selectByStatus" resultType="com.example.springboot.entity.Project">
+        SELECT * FROM project
+        WHERE status = #{status}
+    </select>
+
+</mapper>
+

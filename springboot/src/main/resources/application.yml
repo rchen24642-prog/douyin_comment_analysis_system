@@ -1,0 +1,64 @@
+#http监听端口9090
+server:
+  port: 9090
+  error:
+    include-stacktrace: always   # 或 on_param
+    include-message: always
+    include-binding-errors: always
+
+#flask
+#  cd python_service
+#  python app.py
+
+#neo4j数据库链接
+#neo4j.bat console
+#http://localhost:7474/
+spring:
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: ririchen0426@
+
+#eslasticsearch：
+#elasticsearch.bat
+  elasticsearch:
+    uris: http://localhost:9200
+    username: elastic
+    password: VCRxu2XZXJYOgxvk4wa2
+    data:
+      elasticsearch:
+        mapping:
+          _class-field:
+            enabled: false
+
+
+
+  #sql数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
+    url: jdbc:mysql://localhost:3306/douyincac_sql?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
+
+
+
+#配置mybatis实体与xml映射
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.springboot.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+
