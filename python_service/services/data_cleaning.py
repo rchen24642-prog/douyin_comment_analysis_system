@@ -14,7 +14,7 @@ def clean_data(input_path, output_path, options_json="[]", download_time=None):
     - 可选清洗规则
     """
 
-    # 1️⃣ 文件读取
+    #文件读取
     ext = os.path.splitext(input_path)[-1].lower()
     if ext in [".xlsx", ".xls"]:
         df_raw = pd.read_excel(input_path, engine="openpyxl")
@@ -24,7 +24,7 @@ def clean_data(input_path, output_path, options_json="[]", download_time=None):
     print(f"🧾 表单参数： {options_json}")
     print(f"📂 文件共 {len(df_raw)} 条记录")
 
-    # 2️⃣ 字段自动映射
+    #字段自动映射
     colmap = {
         "username": None,
         "comment_time": None,
@@ -56,7 +56,7 @@ def clean_data(input_path, output_path, options_json="[]", download_time=None):
 
     print("🧩 字段映射表：", colmap)
 
-    # 3️⃣ 数据拆平：一级 + 二级评论
+    #数据拆平：一级 + 二级评论
     rows = []
     for _, r in df_raw.iterrows():
         top_cid = str(uuid.uuid4())
@@ -98,7 +98,7 @@ def clean_data(input_path, output_path, options_json="[]", download_time=None):
 
     print(f"✅ 拆平完成，共 {len(df)} 条；其中二级评论 {sum(df['comment_type']==1)} 条")
 
-    # 4️⃣ 清洗选项
+    #清洗选项
     options = json.loads(options_json or "[]")
 
     if "删除缺失行" in options:
@@ -120,7 +120,7 @@ def clean_data(input_path, output_path, options_json="[]", download_time=None):
         for k, v in slang.items():
             df["content"] = df["content"].astype(str).str.replace(k, v, regex=False)
 
-    # 5️⃣ 导出
+    #导出
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     df.to_csv(output_path, index=False, encoding="utf-8-sig")
 
